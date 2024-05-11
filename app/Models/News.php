@@ -2,14 +2,14 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
-use Spatie\Sluggable\HasSlug;
-use Spatie\Sluggable\SlugOptions;
+use Illuminate\Database\Eloquent\Model,
+    Spatie\Sluggable\HasSlug,
+    Spatie\Sluggable\SlugOptions;
 class News extends Model
 {
     use HasSlug;
 
-    protected $table='News';
+    protected $table='News' ;
     protected $fillable =
         [
             'title',
