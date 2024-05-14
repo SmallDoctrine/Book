@@ -18,7 +18,7 @@
         </div>
     @endif
 
-    <form class="max-w-sm mx-auto" method="get" action="http://127.0.0.1:8000/books/updateStore/{{$Books->id}}">
+    <form class="max-w-sm mx-auto" method="get" action="http://127.0.0.1:8000/books/updateStore/{{$Books->name}}">
         <div class="mb-5">
             <label for="name"  class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">название книги </label>
             <input  id="name" name="name"  value=" {{$Books->name}} " class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 :border-blue-500 "  required />

@@ -3,8 +3,8 @@
 namespace App\Console\Commands;
 
 use App\Models\Books;
-use Illuminate\Console\Command,
-    GuzzleHttp\Client;
+use App\Repositories\token\Services\AbstractApi\AbstractApiServices;
+use Illuminate\Console\Command;
 
 class Books_count extends Command
 {
@@ -27,30 +27,29 @@ class Books_count extends Command
      */
     public function handle()
     {
-     $result = $this->up();
-    Books::where('name',$result->bpi->BTC->code)
-        ->update(
-            [
-          'count'=>  (int) $result->bpi->USD->rate_float
-            ]);
-    }
+     $client = new AbstractApiServices();
+     $result = $client->live();
 
+        foreach ($result->exchange_rates as $key => $value) {
+            $token = Books::where(['name' => $key])->first();
+            if (is_null($token)){
+                Books::create(
+                    [
+                    'name' => (string) $key ,
+                    'count'=>  $value,
+                    'description' => 'скоро добавим' ,
+                    'years' => 2024
+                  ]);
+            }else{
+                Books::where(['name'=>$key])->update
+                ([
+                    'count'=>$value,
+                ]);
+            }
+            }
 
-    public function up()
-    {
-        //$client - функция которая находится в родительсском классе
-        $client = new Client([
-            'base_uri' => 'https://api.coindesk.com/v1/bpi/',
-            // префикс сайта /  вся дальнейшая конкрретная часть роута указывается в  $client->get (url)
-            'timeout'  => 2.0,
-            // время ожидания ответа с домена при отстувии ответа в течении времени результат не будет выполнен
-        ]);
-        $response = $client->get('currentPrice/btc.json',[]);
-        //   теперь в клиенте содержится тело и хедер запроса получуенный с сайта
-        return json_decode($response ->getBody());
-        //  сейчас получаем именно тело с помощью getBody() можно получить и хедер (200- статус код - ОК)
-        // json decode - декорация - расшифровка на человекопонятный формат ( конвертирует с байтов )
-        //  сейчас $body имееит результат в своего рода массиве с переменными , где нужно последовательно выбрать нужную нам инфу
      }
 
+
 }
+

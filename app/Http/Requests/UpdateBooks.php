@@ -25,8 +25,8 @@ class UpdateBooks extends FormRequest
         return [
             'name'=>'required|string|max:30|',
             'description'=>'required|string|max:100',
-            'years'=>'required|numeric|max:2024',
-            'count'=>'required|numeric|max:99999'
+            'years'=>'required|numeric|',
+            'count'=>'required|numeric|'
         ];
     }
 }

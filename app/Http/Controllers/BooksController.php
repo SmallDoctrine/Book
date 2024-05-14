@@ -5,18 +5,20 @@ namespace App\Http\Controllers;
 use App\Http\Requests\CreateBooks;
 use App\Http\Requests\UpdateBooks;
 use App\Models\Books;
+use App\Repositories\token\TokenRepositoriesInterface;
 use Illuminate\Http\Request;
 
 class BooksController extends Controller
 {
-
+    private $rep ;
+    public function  __construct (TokenRepositoriesInterface $repositories)
+    {
+        $this->rep = $repositories ;
+    }
 
     public function index(Request $request)
     {
-        $check = Books::where('years', '>', $request->filled('years') ? $request->input('years') : 0)
-            ->orderBy($request->filled('sort') ? $request->input('sort') : 'id',
-                $request->filled('order') ? $request->input('order'):'desc')->get();
-        return view('components.CRUD.index', ['check' => $check]);
+        return view('components.CRUD.index', ['check'=> $this->rep->GetList($request->all())]);
     }
 
 
@@ -27,37 +29,36 @@ class BooksController extends Controller
 
     public function createStore(CreateBooks $request)
     {
-        Books::create($request->all());
-        return redirect()->back()->with('add', ' ваша книга добавлена!');
+        $this->rep->createStore($request);
+        return redirect()->back()->with ('up','Токен добавлен!');
     }
 
-    public function update(int $id, Request $request)
+    public function update(string $name)
     {
-        $Books = Books::find($id);
-        //если передаем id в квери которых нет в таблице делаем проверку и редирект на выбранную страницу(route)
+        $Books = $this->rep->update($name);
         if (is_null($Books)) {
             return redirect()->route('books.homepage');
         }
         return view('components.CRUD.update-form', ['Books' =>$Books]);
     }
 
-    public function updateStore(int $id, UpdateBooks $request)
+    public function updateStore(string $name, UpdateBooks $request)
     {
-        Books::where('id', $id)->update($request->all());
-        return redirect()->back()->with('up', 'Книга Обновлена !');
+        $this->rep->updateStore($name ,$request) ;
+        return redirect()->back()->with('up', 'Книга Обновлена!');
     }
 
 
-    public function destroy(int $id, Request $request)
+    public function destroy($name)
     {
-        Books::destroy($id);
+            $this->rep->destroy($name);
         return redirect()->route('books.homepage')->with('up','Запись удалена');
     }
 
 
-    public function show(int $id, Request $request)
+    public function show(string $name, Request $request)
     {
-        $m = Books::find($id);
+        $m = $this->rep->GetOne($name);
         return view('components.CRUD.show',['item'=>$m]);
     }
 }
