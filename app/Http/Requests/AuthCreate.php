@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class Createnews extends FormRequest
+class AuthCreate extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -22,12 +22,9 @@ class Createnews extends FormRequest
     public function rules(): array
     {
         return [
-            'title'=>['min:3','max:40','required'],
-            'body'=>['min:10','required'],
-            'category_id'=>['required','exists:App\Models\Categories,id'],
-            // image - ожидает все типы файлов связанные с картинками jeg img webp и т п
-            'image'=>['required','image']
+            'name'=>['required','string','max:30'],
+            'password'=>['required','string','max:30','confirmed'],
+            'email'=>['required','string','max:30','email','unique:users']
         ];
     }
 }
-

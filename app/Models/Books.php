@@ -12,7 +12,7 @@ class Books extends Model
         'name',
         'description',
         'years',
-        'count'
+        'count',
     ];
 
 }

@@ -2,9 +2,7 @@
 
 namespace App\Repositories\token;
 
-use App\Http\Requests\CreateBooks;
 use App\Models\Books;
-use Illuminate\Http\Request;
 
 class TokenRepositories implements TokenRepositoriesInterface
 {
@@ -24,24 +22,18 @@ class TokenRepositories implements TokenRepositoriesInterface
 
     public function destroy($name)
     {
-        // destroy - ждет входной параметр число получает строку
         Books::deleted($name);
     }
 
-    public function createStore(Request $request)
+    public function createStore(array $data)
     {
-         return
-             Books::create($request->all());
+         return Books::create($data);
     }
 
-    public function updateStore(string $name, $request)
+    public function updateStore(string $name, array $data)
     {
        return
-           Books::where('name',$name)->update($request->all());
+           Books::where('name',$name)->update($data);
     }
 
-    public function update($name)
-    {
-        return Books::where('name',$name)->first();
-    }
 }

@@ -18,6 +18,7 @@ class News extends Model
             'like',
             'view_count',
             'Book_id',
+            'image',
             'category_id'
         ];
 
@@ -31,7 +32,7 @@ class News extends Model
             ->saveSlugsTo('slug');
     }
 
-    public function Book()
+    public function token()
     {
         return $this->hasOne(Books::class,'id','Book_id');
     }

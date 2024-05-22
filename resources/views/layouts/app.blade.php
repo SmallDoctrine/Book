@@ -2,7 +2,7 @@
 <html lang="ru">
 <head>
     <script src="https://cdn.tailwindcss.com"></script>
-    <title>Библиотека</title>
+    <title>@yield('title')| Криптовалюта</title>
 </head>
 <body>
 @include( 'components.ForLayouts.Header')

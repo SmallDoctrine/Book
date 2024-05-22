@@ -6,7 +6,7 @@ use App\Http\Requests\Createnews;
 use App\Models\Categories;
 use App\Models\News;
 use Illuminate\Support\Facades\DB;
-use Termwind\Components\Dd;
+use Illuminate\Support\Facades\Storage;
 
 class NewsController extends Controller
 {
@@ -28,8 +28,23 @@ class NewsController extends Controller
 
     public function CreateStore(Createnews $request)
     {
-        News::create($request->all());
-        return redirect()->back()->with('add','Новость Добавлена');
+        $file= $request->file('src');
+        $filename = $file->getClientOriginalName();
+        // указываем что получили с формы картинку с ключом src ->
+        // getClientOriginalName (достает оригинальное название картинки с массива загруженно файла )
+        // заварачиваем все в переменную filename для дальнейшего взаимодействия
+        $path = "news/$filename";
+        Storage::disk('public')->put($path,file_get_contents($file));
+            //в функции  storage disk(указываем место хранения файла ) ->
+            // put (принимает 2 параметра - 1)path- путь для хранения в хранилище , 2) file_get_contents -саму картинку)
+            //  file_get_contents - загружает с временого хранилище в оригинальное
+        $request->merge([
+            'image'=>$path
+        ]);
+        //        $request->merge([]) - обьединяет все request параметры в один единный массив для дальнейшего взаимодействия
+
+            News::create($request->all());
+            return redirect()->back()->with('add','Новость Добавлена');
     }
 
     public function show($slug)
@@ -40,7 +55,7 @@ class NewsController extends Controller
             ->increment('view_count');
 
 
-        $show=News::with('Book')->where('slug',$slug)->first();
+        $show=News::with('token','category')->where('slug',$slug)->first();
         return view('components.News.show',['show'=>$show]);
 
     }

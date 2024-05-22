@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\CreateBooks;
 use App\Http\Requests\UpdateBooks;
-use App\Models\Books;
 use App\Repositories\token\TokenRepositoriesInterface;
 use Illuminate\Http\Request;
 
@@ -18,6 +17,7 @@ class BooksController extends Controller
 
     public function index(Request $request)
     {
+
         return view('components.CRUD.index', ['check'=> $this->rep->GetList($request->all())]);
     }
 
@@ -29,13 +29,13 @@ class BooksController extends Controller
 
     public function createStore(CreateBooks $request)
     {
-        $this->rep->createStore($request);
+        $this->rep->createStore($request->all());
         return redirect()->back()->with ('up','Токен добавлен!');
     }
 
     public function update(string $name)
     {
-        $Books = $this->rep->update($name);
+        $Books = $this->rep->GetOne($name);
         if (is_null($Books)) {
             return redirect()->route('books.homepage');
         }
@@ -44,7 +44,7 @@ class BooksController extends Controller
 
     public function updateStore(string $name, UpdateBooks $request)
     {
-        $this->rep->updateStore($name ,$request) ;
+        $this->rep->updateStore($name,$request->all()) ;
         return redirect()->back()->with('up', 'Книга Обновлена!');
     }
 
