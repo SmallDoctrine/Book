@@ -12,7 +12,8 @@ class AuthRepositories implements AuthRepositoriesInterface
         return view('components.auth.create-form');
     }
 
-    public function createStore( array $request )
+    public function createStore( $request )
+
     {
         User::create($request);
 

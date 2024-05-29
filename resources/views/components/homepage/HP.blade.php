@@ -1,6 +1,22 @@
 @extends('layouts.app')
 
 @section('cont')
+    @if (session('up'))
+        <div class="alert alert-success">
+            {{ session('up') }}
+        </div>
+    @endif
+
+    <!--отображение ошибок валидации -->
+    @if ($errors->any())
+        <div class="alert alert-danger">
+            <ul>
+                @foreach ($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                @endforeach
+            </ul>
+        </div>
+    @endif
     <div class=" my-9"> <!-- my - отссупы по гризонтали -->
         <div class=" flex justify-between ">
             <div><h1 class="text-2xl mb-7"> топ 5  </h1>

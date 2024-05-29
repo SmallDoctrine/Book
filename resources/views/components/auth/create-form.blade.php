@@ -19,7 +19,7 @@
         </div>
     @endif
 
-    <form class="max-w-sm mx-auto"  method="post"  action="{{ route('auth.createStore') }}">
+    <form class="max-w-sm mx-auto"  method="post"  action="{{ route('createStore') }}">
         @csrf
         <div class="mb-5">
             <label for="name"  class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"> Введите имя </label>

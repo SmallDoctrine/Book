@@ -23,11 +23,24 @@ Route::controller(\App\Http\Controllers\NewsController::class)->prefix('News')->
     Route::get('show/{slug}','show')->name('show');
 });
 
+Route::middleware('auth')->group(function () {
+    Route::post('/logout',[\App\Http\Controllers\auth\LoginController::class,'logout'])->name('logout');
 
-Route::controller(\App\Http\Controllers\AuthController::class)->name('auth.')->prefix('auth')->group(function(){
-    Route::get('create','create')->name('create');
-    Route::post('create-store','createStore')->name('createStore');
+    Route::prefix('user')->name('user.')->group(function () {
+        Route::get('/dashboard' ,[\App\Http\Controllers\user\UserController::class ,'index'])->name('dashboard');
     });
+
+});
+
+Route::middleware('guest')->group(function () {
+    Route::prefix('login')->group(function(){
+        Route::get('/',[\App\Http\Controllers\auth\LoginController::class,'index'])->name('login');
+        Route::post('/',[\App\Http\Controllers\auth\LoginController::class,'authenticate'])->name('authenticate');
+    });
+    Route::get('/register',[\App\Http\Controllers\auth\AuthController::class,'create'])->name('create');
+    Route::post('/register/store',[\App\Http\Controllers\auth\AuthController::class,'createStore'])->name('createStore');
+});
+
 
 
 
