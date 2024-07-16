@@ -2,8 +2,8 @@
 
 namespace App\Console\Commands;
 
-use App\Repositories\token\Services\AbstractApi\AbstractApiServices;
 use App\Repositories\token\TokenRepositoriesInterface;
+use App\Services\AbstractApi\AbstractApiServices;
 use Illuminate\Console\Command;
 
 class BooksCount extends Command

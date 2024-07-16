@@ -9,7 +9,7 @@ class TokenRepositories implements TokenRepositoriesInterface
 
     public function GetOne(string $name)
     {
-       return  Books::where('name',$name)->first() ;
+       return  Books::with('News')->where('name',$name)->first() ;
     }
 
     public function GetList(array $filter = [])

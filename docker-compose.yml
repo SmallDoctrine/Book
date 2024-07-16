@@ -1,0 +1,52 @@
+version: "3.8"
+networks:
+  CoinMarket-app-Network:
+    driver: bridge
+
+services:
+  market-app-nginx:
+    restart: always
+    container_name: market-app-nginx
+    build:
+      context: ./.docker/nginx
+      dockerfile: Dockerfile
+    ports:
+      - "8088:80"
+    volumes:
+      - "./.:/app/"
+    networks:
+      - CoinMarket-app-Network
+
+
+
+  market-app-php:
+      restart: always
+      container_name: market-app-php
+      build:
+        context: ./
+        dockerfile: Dockerfile
+      env_file:
+        -   ./.env
+      volumes:
+          -   ". :/app"
+      networks:
+          - CoinMarket-app-Network
+
+
+  market-app-postgres:
+      restart: always
+      build:
+          context: .docker/postgres
+          dockerfile: Dockerfile
+      container_name: market-app-postgres
+      ports:
+          -   "5431:5432"
+      environment:
+          - POSTGRES_USER=Valid
+          - POSTGRES_PASSWORD=1234
+      networks:
+          - CoinMarket-app-Network
+      volumes:
+          -   "./.data/database/postgres/data:/var/lib/postgresql/data"
+
+

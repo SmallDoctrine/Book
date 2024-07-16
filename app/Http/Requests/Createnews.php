@@ -25,8 +25,7 @@ class Createnews extends FormRequest
             'title'=>['min:3','max:40','required'],
             'body'=>['min:10','required'],
             'category_id'=>['required','exists:App\Models\Categories,id'],
-            // image - ожидает все типы файлов связанные с картинками jeg img webp и т п
-            'image'=>['required','image']
+            'link'=>['required','image']
         ];
     }
 }

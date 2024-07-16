@@ -2,6 +2,8 @@
 
 namespace App\Providers;
 
+use App\Services\Cart\Cart;
+use App\Services\Cart\CartServices;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -19,6 +21,6 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        //
+        view()->share('totalQuantity' , \App\Facades\Cart::totalQuantity() );
     }
 }

@@ -1,23 +1,45 @@
 @extends('layouts.app')
-
 @section('cont')
-    @if (session('add'))
-        <div class="alert alert-success">
-            {{ session('add') }}
+    <div class="flex">
+        <div class="p-10 w-1/3 border ">
+            <div class="flex gap-3 items-center text-xl">
+                <img src="https://s2.coinmarketcap.com/static/img/coins/64x64/1.png" height="24" width="24" alt="BTC" loading="lazy" decoding="async" fetchpriority="low" >
+                <a>{{$token->name}}</a>
+                <button type="submit" class="text-white bg-gray-800 hover:bg-gray-900 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-full text-sm px-5 py-2.5 me-2 mb-2 dark:bg-gray-800 ">купить</button>
+            </div>
+            <p class="text-xl mt-2"> $ {{$token->count}}</p>
         </div>
-    @endif
-    <div class="group my-10 flex w-full max-w-xs flex-col overflow-hidden rounded-lg border border-gray-300 bg-white shadow-md">
-        <svg class="pointer-events-none absolute inset-x-0 bottom-5 mx-auto text-3xl text-white  transition-opacity group-hover:animate-ping group-hover:opacity-30 peer-hover:opacity-0" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" role="img" width="1em" height="1em" preserveAspectRatio="xMidYMid meet" viewBox="0 0 32 32"><path fill="currentColor" d="M2 10a4 4 0 0 1 4-4h20a4 4 0 0 1 4 4v10a4 4 0 0 1-2.328 3.635a2.996 2.996 0 0 0-.55-.756l-8-8A3 3 0 0 0 14 17v7H6a4 4 0 0 1-4-4V10Zm14 19a1 1 0 0 0 1.8.6l2.7-3.6H25a1 1 0 0 0 .707-1.707l-8-8A1 1 0 0 0 16 17v12Z" /></svg>
-        <div class="mt-4 px-5 pb-5">
-            <h5 class="text-xl tracking-tight text-slate-900">Упссс...</h5>
-            <h5 class="text-xl tracking-tight text-slate-900">  описание токена - {{$item->name}} </h5>
-            <h5 class="text-xl tracking-tight text-slate-900"> находится в разработке, </h5>
-            <h5 class="text-xl tracking-tight text-slate-900"> извините за неудобства! </h5>
 
 
+        <div class="flex p-10 w-2/4 border ">
+            <h1>График</h1>
         </div>
-        <a href="{{route('books.homepage')}}" class="flex items-center justify-center rounded-md bg-slate-900 px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-gray-700 focus:outline-none focus:ring-4 focus:ring-blue-300">
-            <svg xmlns="http://www.w3.org/2000/svg" class="mr-2 h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-            </svg> Остальная библиотека </a>
+
+
+
+
+
+
+
+        <div class="flex p-10 w-1/3 border">
+            <h1>новости</h1>
+
+            @foreach($token->News as $item)
+                <div class="mt-6 mb-4 border w-64 p-6 block">
+                    <span class="mb-5 bg-blue-300">{{$item->category->name}}</span>
+                    <a href="{{route('News.show',$item->slug)}}">
+                        <h1 class="text-2xl">{{$item->title}}</h1>
+                    </a>
+                    <div>
+                        <span class="text-sm">view - {{$item->view_count}}</span>
+                        <span class="text-sm">like - {{$item->like}}</span>
+                    </div>
+                    <img src="{{asset("storage/$item->image")}}">
+                </div>
+            @endforeach
+
+        </div>
+
     </div>
+
 @endsection

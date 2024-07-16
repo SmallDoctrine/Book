@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model,
     Spatie\Sluggable\HasSlug,
     Spatie\Sluggable\SlugOptions;
+
 class News extends Model
 {
     use HasSlug;
@@ -40,6 +41,11 @@ class News extends Model
     public function category()
     {
         return $this->hasOne(Categories::class,'id','category_id');
+    }
+
+    public function comments()
+    {
+        return $this->hasMany(Comments::class,'news_id','id');
     }
 }
 

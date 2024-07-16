@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\CartController\CartController;
 use Illuminate\Support\Facades\Route;
 
 Route::controller(\App\Http\Controllers\HomeController::class)->name('table.')->group(function (){
@@ -29,7 +30,7 @@ Route::middleware('auth')->group(function () {
     Route::prefix('user')->name('user.')->group(function () {
         Route::get('/dashboard' ,[\App\Http\Controllers\user\UserController::class ,'index'])->name('dashboard');
     });
-
+    Route::post('comment/store',[\App\Http\Controllers\CommentsController::class,'store'])->name('store');
 });
 
 Route::middleware('guest')->group(function () {
@@ -39,6 +40,17 @@ Route::middleware('guest')->group(function () {
     });
     Route::get('/register',[\App\Http\Controllers\auth\AuthController::class,'create'])->name('create');
     Route::post('/register/store',[\App\Http\Controllers\auth\AuthController::class,'createStore'])->name('createStore');
+});
+
+
+Route::prefix('cart')->name('cart.')->group(function (){
+    Route::get('/',[CartController::class,'index'])->name('index');
+    Route::post('store',[CartController::class,'store'])->name('store');
+    Route::get('clear',[CartController::class,'clear'])->name('clear');
+    Route::get('delete/{id}',[CartController::class,'remove'])->name('delete');
+    Route::post('send',[CartController::class,'send'])->name('send');
+
+
 });
 
 

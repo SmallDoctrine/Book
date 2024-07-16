@@ -59,7 +59,9 @@ class BooksController extends Controller
     public function show(string $name, Request $request)
     {
         $m = $this->rep->GetOne($name);
-        return view('components.CRUD.show',['item'=>$m]);
+        if (is_null($m))
+            return redirect()->back();
+        return view('components.CRUD.show',['token'=>$m]);
     }
 }
 

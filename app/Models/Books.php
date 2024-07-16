@@ -15,7 +15,14 @@ class Books extends Model
         'count',
     ];
 
+
+    public function News()
+    {
+    return $this->hasMany(News::class ,'Book_id','id');
+    }
+
 }
+
 
 
 

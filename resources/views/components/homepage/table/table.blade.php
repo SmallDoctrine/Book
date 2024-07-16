@@ -12,9 +12,6 @@
             <th scope="col" class="px-6 py-3">
                 Цена
             </th>
-            <th scope="col" class="px-6 py-3">
-                Год
-            </th>
         </tr>
         </thead>
         <tbody>
@@ -30,12 +27,24 @@
                 <td class="px-6 py-4">
                     {{$item->count}} Руб
                 </td>
+
                 <td class="px-6 py-4">
-                    {{$item->years}}
+
+                    <form  class="border w-16 p-2 bg-green-400 " action="{{route('cart.store')}}" method="post" >
+                        @csrf
+                        <input type="hidden" name="id" value="{{$item->id}}">
+                        <input type="hidden" name="name" value="{{$item->name}}">
+                        <input type="hidden" name="count" value="{{$item->count}}">
+
+                        <button type="submit" >Купить</button>
+                    </form>
                 </td>
-            </tr>
         @endforeach
 
         </tbody>
+
     </table>
 </div>
+
+
+
